@@ -5,6 +5,10 @@
  */
 $(document).ready(function () {
   
+  $("#root").css("color", getRandomColor());
+  $("#divRight").css("color", getRandomColor());
+  $("#divBottom").css("color", getRandomColor());
+  
   $(".rectangle").on("click", function() {
     var thisRec = $(this);
     console.log(thisRec.width());
@@ -30,5 +34,14 @@ $(document).ready(function () {
   $("#bottom").on("click", function() {
     alert("bottom");
   });
+  
+  function getRandomColor() {
+    var letters = '0123456789ABCDEF'.split('');
+    var color = '#';
+    for (var i = 0; i < 6; i++ ) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  }
 });
 
