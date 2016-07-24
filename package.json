@@ -1,0 +1,8 @@
+{
+  "name": "rectangle",
+  "version": "1.0.0",
+  "keywords": ["util", "functional", "server", "client", "browser"],
+  "author": "fall1600",
+  "contributors": [],
+  "dependencies": {}
+}
