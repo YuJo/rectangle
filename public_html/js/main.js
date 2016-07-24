@@ -5,26 +5,36 @@
  */
 $(document).ready(function () {
   
-  $("#root").css("color", getRandomColor());
-  $("#divRight").css("color", getRandomColor());
-  $("#divBottom").css("color", getRandomColor());
+  $("#root").css("background-color", getRandomColor())
+    .css("z-index", 0);
+  $("#divRight").css("background-color", getRandomColor())
+    .css("z-index", 1);
+  $("#divBottom ").css("background-color", getRandomColor())
+    .css("z-index", 1);;
   
   $(".rectangle").on("click", function() {
     var thisRec = $(this);
     console.log(thisRec.width());
     console.log(thisRec.height());
+    console.log(thisRec.css("z-index"));
   });
   
    $("#divRight").on("click", function() {
     var parent = $(this).parent();
     console.log(parent.width());
     console.log(parent.height());
+    
+    var thisRec = $(this);
+    console.log(thisRec.css("z-index"));
   });
   
    $("#divBottom").on("click", function() {
     var parent = $(this).parent();
     console.log(parent.width());
     console.log(parent.height());
+    
+    var thisRec = $(this);
+    console.log(thisRec.css("z-index"));
   });
   
   $("#right").on("click", function() {
