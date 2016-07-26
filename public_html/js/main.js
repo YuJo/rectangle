@@ -5,44 +5,95 @@
  */
 $(document).ready(function () {
 
-  $("#root").css("background-color", getRandomColor())
-    .css("z-index", 0);
-  $("#divRight").css("background-color", getRandomColor())
-    .css("z-index", 1).css("opacity", 0);
-  $("#divBottom ").css("background-color", getRandomColor())
-    .css("z-index", 1).css("opacity", 0);
+  (function () {
+    $("#root").css("background-color", getRandomColor())
+      .css("z-index", 0);
+    $("#rootRight").css("background-color", getRandomColor())
+      .css("z-index", 1).css("opacity", 0);
+    $("#rootBottom ").css("background-color", getRandomColor())
+      .css("z-index", 1).css("opacity", 0);
+  }());
 
-  $(".rectangle").on("click", function () {
-    var thisRec = $(this);
-    var thisWidth,
-      thisHeight,
-      thisZindex;
+  var root = generateRectangle(500, 500);
+  registerEventHandlers(root);
 
-    thisWidth = thisRec.width();
-    thisHeight = thisRec.height();
-    thisZindex = thisRec.css("z-index");
+  $("#test").append(root);
 
-    alert(thisWidth + " " + thisHeight + " " + thisZindex);
+  function registerEventHandlers(target) {
+    // $(".rectangle").on("click", function () {
 
-  });
+    var right, bottom;
+    right = target.find(".div-right");
+    bottom = target.find(".div-bottom");
 
-  $("#divRight").hover(
-    function () {
-      $(this).fadeTo(1, 1);
-    }, function () {
-    $(this).fadeTo(1, 0);
+    target.on("click", function () {
+      var thisRec = $(this);
+      var thisWidth,
+        thisHeight,
+        thisZindex;
+
+      thisWidth = thisRec.width();
+      thisHeight = thisRec.height();
+      thisZindex = thisRec.css("z-index");
+
+      // alert(thisWidth + " " + thisHeight + " " + thisZindex);
+      console.log(thisWidth);
+      console.log(thisHeight);
+      console.log(thisZindex);
+    });
+
+    // $(".div-right").hover(
+    right.hover(
+      function () {
+        $(this).fadeTo(1, 1);
+      }, function () {
+      $(this).fadeTo(1, 0);
+    }
+    );
+
+    // $(".div-bottom").hover(
+    bottom.hover(
+      function () {
+        $(this).fadeTo(1, 1);
+      }, function () {
+      $(this).fadeTo(1, 0);
+    }
+    );
+
+    // $(".div-right").on("click", function (e) {
+    right.on("click", function (e) {
+      e.stopPropagation();
+      var x, y, parent;
+      parent = $(this).parent();
+      x = parent.width() / 2;
+      y = parent.height();
+
+      parent.width(x);
+
+      var newRight = generateRectangle(x, y);
+      registerEventHandlers(newRight);
+      parent.after(newRight);
+    });
+
+    // $(".div-bottom").on("click", function (e) {
+    bottom.on("click", function (e) {
+      e.stopPropagation();
+      var x, y, parent;
+      parent = $(this).parent();
+      x = parent.width();
+      y = parent.height() / 2;
+
+      parent.height(y);
+
+      var newRight = generateRectangle(x, y);
+      parent.css("float", "initial");
+      registerEventHandlers(newRight);
+      parent.after(newRight);
+    });
+
   }
-  );
 
-  $("#divBottom").hover(
-    function () {
-      $(this).fadeTo(1, 1);
-    }, function () {
-    $(this).fadeTo(1, 0);
-  }
-  );
-
-  $("#divRight").on("click", function (event) {
+  $("#rootRight").on("click", function (event) {
     event.stopPropagation();
     var parent = $(this).parent();
     console.log(parent.width());
@@ -56,10 +107,10 @@ $(document).ready(function () {
     thisHeight = thisRec.height();
     thisZindex = thisRec.css("z-index");
 
-    alert(thisWidth + " " + thisHeight + " " + thisZindex);
+    // alert(thisWidth + " " + thisHeight + " " + thisZindex);
   });
 
-  $("#divBottom").on("click", function (event) {
+  $("#rootBottom").on("click", function (event) {
     event.stopPropagation();
     var parent = $(this).parent();
     console.log(parent.width());
@@ -73,16 +124,21 @@ $(document).ready(function () {
     thisHeight = thisRec.height();
     thisZindex = thisRec.css("z-index");
 
-    alert(thisWidth + " " + thisHeight + " " + thisZindex);
-
+    // alert(thisWidth + " " + thisHeight + " " + thisZindex);
   });
 
-  $("#right").on("click", function () {
-    alert("right");
+  $("#doLarge").on("click", function () {
+    // alert("right");
+    var root = $("#root");
+    root.width(root.width() * 2);
+    root.height(root.height() * 2);
   });
 
-  $("#bottom").on("click", function () {
-    alert("bottom");
+  $("#doSmall").on("click", function () {
+    // alert("bottom");
+    var root = $("#root");
+    root.width(root.width() / 2);
+    root.height(root.height() / 2);
   });
 
   function getRandomColor() {
@@ -93,4 +149,37 @@ $(document).ready(function () {
     }
     return color;
   }
+  
+  function setXy2Rectangle(target, x, y) {
+    target.width(x);
+    target.height(y);
+  }
+
+  function generateRectangle(x, y) {
+    var root = $("<div />", {
+      "class": "rectangle root"
+    });
+
+    var right = $("<div />", {
+      "class": "rectangle div-right"
+    });
+
+    var bottom = $("<div />", {
+      "class": "rectangle div-bottom"
+    });
+
+    root.css("background-color", getRandomColor())
+      .css("z-index", 0);
+    right.css("background-color", getRandomColor())
+      .css("z-index", 1).css("opacity", 0);
+    bottom.css("background-color", getRandomColor())
+      .css("z-index", 1).css("opacity", 0);
+    root.append(right).append(bottom);
+
+    root.width(x);
+    root.height(y);
+
+    return root;
+  }
+
 });
